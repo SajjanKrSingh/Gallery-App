@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import ImageCard from "./ImageCard";
 import ImageModal from "./ImageModal";
 import Pagination from "./Pagination";
 import FilterOptions from "./FilterOptions";
 import { createClient } from "pexels";
+import { Link } from "react-router-dom";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -22,13 +22,14 @@ const Gallery = () => {
   const fetchImages = async () => {
     try {
       const query = filterCriteria ? filterCriteria : "nature";
-      const response = await client.photos.search({
+      const response =await client.photos.search({
         query,
         per_page: 12,
         page: currentPage,
       });
+      // console.log(response);
       setImages([...response.photos]);
-      setTotalPages(response.total_results / 12);
+      setTotalPages(Math.ceil(response.total_results / 12));
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -59,20 +60,26 @@ const Gallery = () => {
 
   const toggleFavorite = (image) => {
     setFavorites((prevFavorites) => {
-      if (prevFavorites.some((fav) => fav.id === image.id)) {
-        return prevFavorites.filter((fav) => fav.id !== image.id);
-      } else {
-        return [...prevFavorites, image];
-      }
+      const updatedFavorites = prevFavorites.some((fav) => fav.id === image.id)
+        ? prevFavorites.filter((fav) => fav.id !== image.id)
+        : [...prevFavorites, image];
+      return updatedFavorites;
     });
   };
 
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-6xl font-[voyage] mb-4 text-center">Image Gallery</h1>
-      <FilterOptions setFilterCriteria={setFilterCriteria} />
+      <div className="flex items-center justify-between">
+        <Link to="/upload">
+          <button className="bg-blue-500 mb-5 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Upload Image
+          </button>
+        </Link>
+        <FilterOptions setFilterCriteria={setFilterCriteria} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {images && images.length > 0 ? (
+        {images.length > 0 ? (
           images.map((image) => (
             <ImageCard
               key={image.id}
@@ -91,6 +98,8 @@ const Gallery = () => {
           image={selectedImage}
           similarImages={similarImages}
           onClose={handleModalClose}
+          toggleFavorite={toggleFavorite}
+          isFavorite={favorites.some((fav) => fav.id === selectedImage.id)}
         />
       )}
       <Pagination

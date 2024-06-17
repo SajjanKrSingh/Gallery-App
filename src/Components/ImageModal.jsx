@@ -1,7 +1,13 @@
-import React from 'react';
-import ImageCard from './ImageCard';
+import React from "react";
+import ImageCard from "./ImageCard";
 
-const ImageModal = ({ image, similarImages, onClose }) => {
+const ImageModal = ({
+  image,
+  similarImages,
+  onClose,
+  toggleFavorite,
+  isFavorite,
+}) => {
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4">
@@ -11,7 +17,11 @@ const ImageModal = ({ image, similarImages, onClose }) => {
         ></div>
         <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all max-w-7xl w-full">
           <div className="relative">
-            <img src={image.src.original} alt={image.photographer} className="w-full h-96 object-cover" />
+            <img
+              src={image.src.original}
+              alt={image.photographer}
+              className="w-full h-96 object-cover"
+            />
             <button
               className="absolute top-2 right-2 text-white bg-gray-500 rounded-full p-2 hover:bg-gray-600"
               onClick={onClose}
@@ -31,6 +41,12 @@ const ImageModal = ({ image, similarImages, onClose }) => {
                 />
               </svg>
             </button>
+            <i
+              className={`ri-heart-3-fill text-3xl cursor-pointer ease-out duration-300 ${
+                isFavorite ? "text-red-500" : "text-gray-400"
+              } hover:text-4xl absolute top-2 left-3`}
+              onClick={() => toggleFavorite(image)}
+            ></i>
           </div>
           <div className="p-4">
             <h2 className="text-2xl font-bold mb-2">{image.photographer}</h2>
@@ -41,7 +57,9 @@ const ImageModal = ({ image, similarImages, onClose }) => {
                   <ImageCard
                     key={similarImage.id}
                     image={similarImage}
-                    onImageClick={onClose}
+                    onImageClick={() => onClose()}
+                    toggleFavorite={toggleFavorite}
+                    isFavorite={similarImage.isFavorite}
                   />
                 ))}
               </div>

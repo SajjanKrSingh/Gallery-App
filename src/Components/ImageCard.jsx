@@ -4,7 +4,6 @@ const ImageCard = ({ image, onImageClick, isFavorite, toggleFavorite }) => {
   return (
     <div
       className="hover:scale-[1.05] ease-out duration-300 overflow-hidden cursor-pointer rounded-custom shadow-custom-neumorphism p-6 bg-gradient-to-r from-[#fff] to-[#f0f0f0] custom-gradient shadow-2xl" 
-    
       onClick={() => onImageClick(image)}
     >
       <img src={image.src.original} alt={image.photographer} className="w-full h-48 object-cover" />
@@ -23,4 +22,3 @@ const ImageCard = ({ image, onImageClick, isFavorite, toggleFavorite }) => {
 };
 
 export default ImageCard;
-

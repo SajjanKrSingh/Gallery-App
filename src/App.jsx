@@ -1,14 +1,17 @@
-import React from 'react';
-import Gallery from './Components/Gallery';
+import React, { useState } from "react";
+import { BrowserRouter as Router,Route, Routes } from "react-router-dom";
+import Gallery from "../src/Components/Gallery";
+import UploadForm from "../src/Components/UploadForm";
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <Gallery />
-      
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Gallery />} />
+        <Route path="/upload" element={<UploadForm />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

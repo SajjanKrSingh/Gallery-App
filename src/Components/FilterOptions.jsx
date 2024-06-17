@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const FilterOptions = ({ setFilterCriteria }) => {
-  const categories = ["nature", "earth", "technology", "people", "animals","girls","abstract"];
+  const categories = ["nature", "people","girls","nudes"];
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleCategoryChange = (event) => {
