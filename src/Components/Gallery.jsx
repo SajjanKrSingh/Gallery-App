@@ -40,19 +40,21 @@ const Gallery = () => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [currentPage, filterCriteria, favorites]);
 
-  const handleImageClick = async (image) => {
+  const handleImageClick = async (image, isSimilarImage = false) => {
     setSelectedImage(image);
-    try {
-      const response = await client.photos.search({
-        query: "nature",
-        per_page: 12,
-      });
-      setSimilarImages([...response.photos]);
-    } catch (error) {
-      console.error("Error fetching images:", error);
+
+    if (!isSimilarImage) {
+      try {
+        const response = await client.photos.search({
+          query: "nature",
+          per_page: 12,
+        });
+        setSimilarImages([...response.photos]);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
     }
   };
-
   const handleModalClose = () => {
     setSelectedImage(null);
     setSimilarImages([]);
@@ -101,6 +103,7 @@ const Gallery = () => {
           toggleFavorite={toggleFavorite}
           isFavorite={favorites.some((fav) => fav.id === selectedImage.id)}
         />
+        
       )}
       <Pagination
         currentPage={currentPage}
